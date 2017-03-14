@@ -1,35 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cs_Pong
+﻿namespace Cs_Pong
 {
     class Color
     {
-        public byte red { get; set; }
-        public byte green { get; set; }
-        public byte blue { get; set; }
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
 
         public Color(byte r, byte g, byte b)
         {
-            setRGB(r, g, b);
+            SetRGB(r, g, b);
         }
         public Color(Color other)
         {
-            red = other.red;
-            green = other.green;
-            blue = other.blue;
+            Red = other.Red;
+            Green = other.Green;
+            Blue = other.Blue;
         }
 
-        public void getRGB(out int r, out int g, out int b)
+        public void GetRGB(out int r, out int g, out int b)
         {
-            r = red; g = green; b = blue;
+            r = Red; g = Green; b = Blue;
         }
-        public void setRGB(byte r, byte g, byte b)
+        public void SetRGB(byte r, byte g, byte b)
         {
-            red = r; green = g; blue = b;
+            Red = r; Green = g; Blue = b;
         }
 
         public Color Clone()

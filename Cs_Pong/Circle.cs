@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cs_Pong
 {
     class Circle : Shape
     {
-        protected float _radius;
-        public float radius
+        protected float radius;
+        public float Radius
         {
             get
             {
-                return _radius;
+                return radius;
             }
             set
             {
-                _radius = value;
-                updateMass();
+                radius = value;
+                UpdateMass();
             }
         }
         public float alpha, rotZ;
@@ -26,7 +23,7 @@ namespace Cs_Pong
 
         public Circle(float posX, float posY, float __radius, byte r, byte g, byte b, float celX, float celY, float _rotZ, bool _isFixed = false) : base(posX, posY, r, g, b, celX, celY, _isFixed)
         {
-            radius = __radius;
+            Radius = __radius;
             rotZ = _rotZ;
             alpha = 0;
         }
@@ -35,16 +32,16 @@ namespace Cs_Pong
         {
             points = 0;
         }
-        protected override void updateMass()
+        protected override void UpdateMass()
         {
-            mass = (float)Math.PI * radius * radius * Options.MASS_PER_VOLUME_CIRC;
+            Mass = (float)Math.PI * Radius * Radius * Options.MASS_PER_VOLUME_CIRC;
         }
 
-        public override void step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height)
+        public override void Step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height)
         {
             if (!isFixed)
             {
-                float massO = 0;
+                float MassO = 0;
                 float radO = 0;
                 float[] gravity = { gravityX, gravityY };
                 float[] norm = { 0, 0 };
@@ -79,7 +76,7 @@ namespace Cs_Pong
                 if (alpha < -360) alpha += 360;
 
                 // Bouncing against the walls (malus)
-                if (new_pos[0] < 0 || new_pos[0] + radius * 2 > width || new_pos[1] < 0 || new_pos[1] + radius * 2 > height)
+                if (new_pos[0] < 0 || new_pos[0] + Radius * 2 > width || new_pos[1] < 0 || new_pos[1] + Radius * 2 > height)
                 {
                     points += Options.WALLS_MALUS;
                     if (new_pos[0] < 0)
@@ -89,11 +86,11 @@ namespace Cs_Pong
                         new_pos[0] = 0;
                         //new_cel[1] = (2*radius*new_rotZ + 5*new_cel[1])/7;
                     }
-                    else if (new_pos[0] + radius * 2 > width)
+                    else if (new_pos[0] + Radius * 2 > width)
                     { // Right
                         norm[0] = -1;
                         norm[1] = 0; // tang = [0, 1]
-                        new_pos[0] = width - radius * 2;
+                        new_pos[0] = width - Radius * 2;
                         //new_cel[1] = (-2*radius*new_rotZ + 5*new_cel[1])/7;
                     }
                     else
@@ -108,21 +105,21 @@ namespace Cs_Pong
                         new_pos[1] = 0;
                         //new_cel[0] = (-2*radius*new_rotZ + 5*new_cel[0])/7;
                     }
-                    else if (new_pos[1] + radius * 2 > height)
+                    else if (new_pos[1] + Radius * 2 > height)
                     { // Bottom
                         norm[0] += 0;
                         norm[1] += -1; // tang = [-1,0]
-                        new_pos[1] = height - radius * 2;
+                        new_pos[1] = height - Radius * 2;
                         //new_cel[0] = (2*radius*new_rotZ + 5*new_cel[0])/7;
                     }
 
-                    getTang(norm, out tang);
+                    GetTang(norm, out tang);
 
-                    new_rotZ = (2 * radius * new_rotZ - 5 * (new_cel[0] * tang[0] + new_cel[1] * tang[1])) / (7 * radius);
+                    new_rotZ = (2 * Radius * new_rotZ - 5 * (new_cel[0] * tang[0] + new_cel[1] * tang[1])) / (7 * Radius);
                     a = (-1) * Options.BOUNCE_COEF * (new_cel[0] * norm[0] + new_cel[1] * norm[1]);
                     for (i = 0; i < 2; i++)
                     {
-                        new_cel[i] = a * norm[i] - rotZ * radius * tang[i];
+                        new_cel[i] = a * norm[i] - rotZ * Radius * tang[i];
                     }
                 }
 
@@ -134,16 +131,16 @@ namespace Cs_Pong
                     norm[0] = 0; norm[1] = 0;
                     // Detect if in the rect
                     // Components of the vector from the ball to the rectangle :
-                    a = new_pos[0] + radius - rec.X - rec.width / 2;
-                    b = new_pos[1] + radius - rec.Y - rec.height / 2;
+                    a = new_pos[0] + Radius - rec.X - rec.Width / 2;
+                    b = new_pos[1] + Radius - rec.Y - rec.Height / 2;
                     c = (float)Math.Sqrt(a * a + b * b); // Norm of this vector
-                    if (c < radius + (float)Math.Sqrt(width * width + height * height) / 2)
+                    if (c < Radius + (float)Math.Sqrt(width * width + height * height) / 2)
                     {
                         // Vertical collisions :
-                        if (new_pos[0] + radius > rec.X && new_pos[0] + radius < rec.X + rec.width)
+                        if (new_pos[0] + Radius > rec.X && new_pos[0] + Radius < rec.X + rec.Width)
                         {
                             // Collision on a (moving) plane
-                            if (new_pos[1] + 2 * radius > rec.Y && new_pos[1] < rec.Y)
+                            if (new_pos[1] + 2 * Radius > rec.Y && new_pos[1] < rec.Y)
                             {
                                 collision = true;
                                 // Top collision
@@ -151,7 +148,7 @@ namespace Cs_Pong
                                 norm[1] = -1; // tang = [-1,0]
                                               //new_pos[1] = rec.Y - 2 * radius;
                             }
-                            else if (new_pos[1] + 2 * radius > rec.Y + rec.height && new_pos[1] < rec.Y + rec.height)
+                            else if (new_pos[1] + 2 * Radius > rec.Y + rec.Height && new_pos[1] < rec.Y + rec.Height)
                             {
                                 collision = true;
                                 // Bottom collision
@@ -161,10 +158,10 @@ namespace Cs_Pong
                             }
                         }
                         // Horizontal collisions :
-                        else if (new_pos[1] + radius > rec.Y && new_pos[1] + radius < rec.Y + rec.height)
+                        else if (new_pos[1] + Radius > rec.Y && new_pos[1] + Radius < rec.Y + rec.Height)
                         {
                             // Collision on a (moving) plane
-                            if (new_pos[0] + 2 * radius > rec.X && new_pos[0] < rec.X)
+                            if (new_pos[0] + 2 * Radius > rec.X && new_pos[0] < rec.X)
                             {
                                 collision = true;
                                 // Left collision
@@ -172,7 +169,7 @@ namespace Cs_Pong
                                 norm[1] = 0; // tang = [0, 1]
                                              //new_pos[0] = rec.X - radius * 2;
                             }
-                            else if (new_pos[0] + 2 * radius > rec.X + rec.width && new_pos[0] < rec.X + rec.width)
+                            else if (new_pos[0] + 2 * Radius > rec.X + rec.Width && new_pos[0] < rec.X + rec.Width)
                             {
                                 collision = true;
                                 // Right collision
@@ -185,44 +182,44 @@ namespace Cs_Pong
                         {
                             if ((a > 0 && b < 0))
                             {
-                                a = new_pos[0] + radius - rec.X - rec.width;
-                                b = new_pos[1] + radius - rec.Y;
+                                a = new_pos[0] + Radius - rec.X - rec.Width;
+                                b = new_pos[1] + Radius - rec.Y;
                                 c = (float)Math.Sqrt(a * a + b * b); //Norm of this vector
                                                           // Collision on an corner (like a little sphere or a 45° plane ?)
-                                if (c < radius)
+                                if (c < Radius)
                                 {
                                     collision = true;
                                 }
                             }
                             else if ((a > 0 && b > 0))
                             {
-                                a = new_pos[0] + radius - rec.X - rec.width;
-                                b = new_pos[1] + radius - rec.Y - rec.height;
+                                a = new_pos[0] + Radius - rec.X - rec.Width;
+                                b = new_pos[1] + Radius - rec.Y - rec.Height;
                                 c = (float)Math.Sqrt(a * a + b * b); //Norm of this vector
                                                           // Collision on an corner (like a little sphere or a 45° plane ?)
-                                if (c < radius)
+                                if (c < Radius)
                                 {
                                     collision = true;
                                 }
                             }
                             else if ((a < 0 && b < 0))
                             {
-                                a = new_pos[0] + radius - rec.X;
-                                b = new_pos[1] + radius - rec.Y;
+                                a = new_pos[0] + Radius - rec.X;
+                                b = new_pos[1] + Radius - rec.Y;
                                 c = (float)Math.Sqrt(a * a + b * b); //Norm of this vector
                                                           // Collision on an corner (like a little sphere or a 45° plane ?)
-                                if (c < radius)
+                                if (c < Radius)
                                 {
                                     collision = true;
                                 }
                             }
                             else if ((a < 0 && b > 0))
                             {
-                                a = new_pos[0] + radius - rec.X;
-                                b = new_pos[1] + radius - rec.Y - rec.height;
+                                a = new_pos[0] + Radius - rec.X;
+                                b = new_pos[1] + Radius - rec.Y - rec.Height;
                                 c = (float)Math.Sqrt(a * a + b * b); //Norm of this vector
                                                           // Collision on an corner (like a little sphere or a 45° plane ?)
-                                if (c < radius)
+                                if (c < Radius)
                                 {
                                     collision = true;
                                 }
@@ -246,19 +243,19 @@ namespace Cs_Pong
                                 points += Options.BAR_BONUS;
                             }
                             
-                            other_cel[0] = (rec.celX * norm[0] + rec.celY * norm[1]) * norm[0];
-                            other_cel[1] = (rec.celX * norm[0] + rec.celY * norm[1]) * norm[1];
+                            other_cel[0] = (rec.CelX * norm[0] + rec.CelY * norm[1]) * norm[0];
+                            other_cel[1] = (rec.CelX * norm[0] + rec.CelY * norm[1]) * norm[1];
 
                             new_pos[0] += norm[0];
                             new_pos[1] += norm[1];
 
-                            getTang(norm, out tang);
-                            new_rotZ = (2 * radius * new_rotZ - 5 * (new_cel[0] * tang[0] + new_cel[1] * tang[1] - other_cel[0] * tang[0] - other_cel[1] * tang[1])) / (7 * radius);
+                            GetTang(norm, out tang);
+                            new_rotZ = (2 * Radius * new_rotZ - 5 * (new_cel[0] * tang[0] + new_cel[1] * tang[1] - other_cel[0] * tang[0] - other_cel[1] * tang[1])) / (7 * Radius);
                             a = (-1) * Options.BOUNCE_COEF * (new_cel[0] * norm[0] + new_cel[1] * norm[1]);
                             b = (1 + Options.BOUNCE_COEF * (other_cel[0] * norm[0] + other_cel[1] * norm[1]));
                             for (i = 0; i < 2; i++)
                             {
-                                new_cel[i] = (a + b) * norm[i] - rotZ * radius * tang[i];
+                                new_cel[i] = (a + b) * norm[i] - rotZ * Radius * tang[i];
                             }
                         }
                     }
@@ -267,15 +264,15 @@ namespace Cs_Pong
                 for (i = 0; i < trigs.Count; i++)
                 {
                     trig = trigs[i];
-                    if (!trig.isOff)
+                    if (!trig.IsOff)
                     {
                         // Components of the vector from the ball to the Triangle :
-                        a = new_pos[0] + radius - trig.X - trig.radius;
-                        b = new_pos[1] + radius - trig.Y - trig.radius;
+                        a = new_pos[0] + Radius - trig.X - trig.Radius;
+                        b = new_pos[1] + Radius - trig.Y - trig.Radius;
                         c = (float)Math.Sqrt(a * a + b * b);        //Norm of this vector
-                        if (c < trig.radius + radius)
+                        if (c < trig.Radius + Radius)
                         {
-                            trig.effects(this);
+                            trig.Effects(this);
                             points += Options.TRIG_BONUS; // Always gain a bonus with triangles (even for bad ones)
                         }
                     }
@@ -287,30 +284,30 @@ namespace Cs_Pong
                     if (circs[i] != this)
                     {
                         other = circs[i];
-                        massO = other.mass;
-                        radO = other.radius;
+                        MassO = other.Mass;
+                        radO = other.Radius;
                         // Components of the vector from the ball to the other one :
-                        a = new_pos[0] + radius - other.X - radO;
-                        b = new_pos[1] + radius - other.Y - radO;
+                        a = new_pos[0] + Radius - other.X - radO;
+                        b = new_pos[1] + Radius - other.Y - radO;
                         c = (float)Math.Sqrt(a * a + b * b);        //Norm of this vector
-                        d = c - radius - other.radius; // Depth of penetration of the two balls (negative value = penetration)
+                        d = c - Radius - other.Radius; // Depth of penetration of the two balls (negative value = penetration)
                                                              // If the 2 balls are colliding
                         if (d < 0)
                         {
                             norm[0] = a / c;
                             norm[1] = b / c;
-                            getTang(norm, out tang);
+                            GetTang(norm, out tang);
                             a = new_cel[0];
                             b = new_cel[1];
-                            c = (mass - massO) / (mass + massO);
-                            d = 2 / (mass + massO);
-                            new_cel[0] = (c * new_cel[0] + massO * d * other.celX) * Options.BOUNCE_COEF;
-                            new_cel[1] = (c * new_cel[1] + massO * d * other.celY) * Options.BOUNCE_COEF;
-                            other.celX = (-c * other.celX + mass * d * a) * Options.BOUNCE_COEF;
-                            other.celY = (-c * other.celY + mass * d * b) * Options.BOUNCE_COEF;
+                            c = (Mass - MassO) / (Mass + MassO);
+                            d = 2 / (Mass + MassO);
+                            new_cel[0] = (c * new_cel[0] + MassO * d * other.CelX) * Options.BOUNCE_COEF;
+                            new_cel[1] = (c * new_cel[1] + MassO * d * other.CelY) * Options.BOUNCE_COEF;
+                            other.CelX = (-c * other.CelX + Mass * d * a) * Options.BOUNCE_COEF;
+                            other.CelY = (-c * other.CelY + Mass * d * b) * Options.BOUNCE_COEF;
                             new_pos[0] += norm[0];
                             new_pos[1] += norm[1];
-                            other.move(-norm[0], -norm[1]);
+                            other.Move(-norm[0], -norm[1]);
                         }
                     }
                 }

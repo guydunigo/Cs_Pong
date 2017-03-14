@@ -7,12 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="mainGrid" Background="Black" RenderTransformOrigin="0.949,0.424">
+    <Grid x:Name="mainGrid" Background="Black">
         <!--{ThemeResource ApplicationPageBackgroundThemeBrush}-->
         <Grid Name="stars"></Grid>
         <Grid Name="rects"></Grid>
-        <Grid Name="circs"></Grid>
         <Grid Name="trigs"></Grid>
+        <Grid Name="circs"></Grid>
         <StackPanel Orientation="Horizontal">
             <TextBlock x:Name="score" Visibility="Visible" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="Points : " VerticalAlignment="Top" Foreground="White" Margin="20,10,5,10" FontSize="30" FontFamily=".\Assets\Vonique 64.ttf#Vonique 64"/>
             <TextBlock x:Name="score_value" Visibility="Visible" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Foreground="White" Margin="0,10,10,10" FontSize="30" FontFamily=".\Assets\Vonique 64.ttf#Vonique 64"/>

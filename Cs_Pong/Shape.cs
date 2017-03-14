@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Cs_Pong
 {
@@ -32,7 +28,7 @@ namespace Cs_Pong
             }
         }
         public float[] cel;
-        public float celX
+        public float CelX
         {
             get
             {
@@ -43,7 +39,7 @@ namespace Cs_Pong
                 cel[0] = value;
             }
         }
-        public float celY
+        public float CelY
         {
             get
             {
@@ -54,27 +50,27 @@ namespace Cs_Pong
                 cel[0] = value;
             }
         }
-        public float mass;
-        public Color color;
+        public float Mass { get; set; }
+        public Color Color;
         public Shape(float posX, float posY, byte r, byte g, byte b, float celX, float celY, bool _isFixed = false)
         {
             isFixed = false;
             pos = new float[]{ posX, posY };
             cel = new float[]{ celX, celY };
-            mass = 42;
-            color = new Color(r, g, b);
+            Mass = 42;
+            Color = new Color(r, g, b);
         }
         
-        protected static void getTang(float[] norm, out float[] tang)
+        protected static void GetTang(float[] norm, out float[] tang)
         {
             tang = new float[] { norm[1], -norm[0] };
         }
 
-        protected abstract void updateMass();
-        public void move(float dx, float dy)
+        protected abstract void UpdateMass();
+        public void Move(float dx, float dy)
         {
             pos[0] += dx;pos[1] += dy;
         }
-        public abstract void step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height);
+        public abstract void Step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height);
     }
 }

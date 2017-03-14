@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Cs_Pong
 {
     class Rectangle : Shape
     {
-        protected float _width, _height;
-        public float width
+        protected float width, height;
+        public float Width
         {
             get
             {
-                return _width;
+                return width;
             }
             set
             {
-                _width = value;
-                updateMass();
+                width = value;
+                UpdateMass();
             }
         }
-        public float height
+        public float Height
         {
             get
             {
-                return _height;
+                return height;
             }
             set
             {
-                _height = value;
-                updateMass();
+                height = value;
+                UpdateMass();
             }
         }
         public bool isCollided;
@@ -38,18 +34,18 @@ namespace Cs_Pong
         public Rectangle(float posX = 0, float posY = 0, float width = 0, float height = 0, byte r = 0, byte g = 0, byte b = 0, float celX = 0, float celY = 0, bool _isFixed = false)
             :base(posX,posY,r,g,b,celX,celY, _isFixed)
         {
-            _width = width;
-            _height = height;
+            this.width = width;
+            this.height = height;
             isCollided = false;
-            updateMass();
+            UpdateMass();
         }
 
-        protected override void updateMass()
+        protected override void UpdateMass()
         {
-            mass = width * height * Options.MASS_PER_VOLUME_RECT;
+            Mass = Width * Height * Options.MASS_PER_VOLUME_RECT;
         }
 
-        public override void step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height)
+        public override void Step(float dt, float gravityX, float gravityY, List<Rectangle> rects, List<Circle> circs, List<Triangle> trigs, float width, float height)
         {
             if (!isFixed)
             {
@@ -65,7 +61,7 @@ namespace Cs_Pong
                 {
                     new_pos[i] += new_cel[i] * dt;
                 }
-                if (new_pos[0] < 0 || new_pos[0] + this.width > width || new_pos[1] < 0 || new_pos[1] + this.height > height)
+                if (new_pos[0] < 0 || new_pos[0] + this.Width > width || new_pos[1] < 0 || new_pos[1] + this.Height > height)
                 {
                     if (new_pos[0] < 0)
                     { // Left
@@ -73,11 +69,11 @@ namespace Cs_Pong
                         norm[1] = 0; // tang = [0,-1]
                         new_pos[0] = 0;
                     }
-                    else if (new_pos[0] + this.width > width)
+                    else if (new_pos[0] + this.Width > width)
                     { // Right
                         norm[0] = -1;
                         norm[1] = 0; // tang = [0, 1]
-                        new_pos[0] = width - this.width;
+                        new_pos[0] = width - this.Width;
                     }
                     else
                     {
@@ -90,14 +86,14 @@ namespace Cs_Pong
                         norm[1] += 1; // tang = [1, 0]
                         new_pos[1] = 0;
                     }
-                    else if (new_pos[1] + this.height > height)
+                    else if (new_pos[1] + this.Height > height)
                     { // Bottom
                         norm[0] += 0;
                         norm[1] += -1; // tang = [-1,0]
-                        new_pos[1] = height - this.height;
+                        new_pos[1] = height - this.Height;
                     }
 
-                    getTang(norm, out tang);
+                    GetTang(norm, out tang);
 
                     a = (-1) * Options.BOUNCE_COEF * (new_cel[0] * norm[0] + new_cel[1] * norm[1]);
                     for (i = 0; i < 2; i++)

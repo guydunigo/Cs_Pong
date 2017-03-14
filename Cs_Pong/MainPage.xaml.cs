@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -76,6 +67,7 @@ namespace Cs_Pong
                         world.GravityY = +Options.ACCg;
                         MoveInMenu();
                         break;
+                    case Windows.System.VirtualKey.Back:
                     case Windows.System.VirtualKey.Escape:
                         if (state == Game_state.Game)
                         {
@@ -89,11 +81,11 @@ namespace Cs_Pong
                     case Windows.System.VirtualKey.Enter:
                         if (selected == play)
                         {
-                            Play_Click(null,null);
+                            Play_Click(null, null);
                         }
                         else if (selected == quit)
                         {
-                            Quit_Click(null,null);
+                            Quit_Click(null, null);
                         }
                         break;
                     default:
@@ -119,7 +111,7 @@ namespace Cs_Pong
 
         private void OnResizing(object sender, SizeChangedEventArgs e)
         {
-            world.resize(e.NewSize.Width,e.NewSize.Height);
+            world.Resize(e.NewSize.Width, e.NewSize.Height);
             CleanScreenElements();
             InitScreen();
         }
@@ -158,7 +150,7 @@ namespace Cs_Pong
             score.Visibility = Visibility.Visible;
             score_value.Visibility = Visibility.Visible;
 
-            world.resetPoints();
+            world.ResetPoints();
         }
         private void SetGameOver()
         {
@@ -234,14 +226,14 @@ namespace Cs_Pong
                 ctemp = new Windows.UI.Xaml.Shapes.Ellipse()
                 {
                     Margin = new Windows.UI.Xaml.Thickness(c.X, c.Y, 0, 0),
-                    Width = c.radius * 2,
-                    Height = c.radius * 2,
+                    Width = c.Radius * 2,
+                    Height = c.Radius * 2,
                     Fill = new SolidColorBrush(new Windows.UI.Color()
                     {
                         A = (byte)255,
-                        R = c.color.red,
-                        G = c.color.green,
-                        B = c.color.blue
+                        R = c.Color.Red,
+                        G = c.Color.Green,
+                        B = c.Color.Blue
                     }),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top
@@ -249,15 +241,15 @@ namespace Cs_Pong
                 circs.Children.Add(ctemp);
                 rtemp = new Windows.UI.Xaml.Shapes.Rectangle()
                 {
-                    Margin = new Windows.UI.Xaml.Thickness(c.X + c.radius, c.Y + c.radius, 0, 0),
-                    Width = c.radius,
-                    Height = c.radius,
+                    Margin = new Windows.UI.Xaml.Thickness(c.X + c.Radius, c.Y + c.Radius, 0, 0),
+                    Width = c.Radius,
+                    Height = c.Radius,
                     Fill = new SolidColorBrush(new Windows.UI.Color()
                     {
                         A = (byte)255,
-                        R = (byte)(255 - c.color.red),
-                        G = (byte)(255 - c.color.green),
-                        B = (byte)(255 - c.color.blue)
+                        R = (byte)(255 - c.Color.Red),
+                        G = (byte)(255 - c.Color.Green),
+                        B = (byte)(255 - c.Color.Blue)
                     }),
                     RenderTransform = new RotateTransform()
                     {
@@ -273,14 +265,14 @@ namespace Cs_Pong
                 rtemp = new Windows.UI.Xaml.Shapes.Rectangle()
                 {
                     Margin = new Thickness(r.X, r.Y, 0, 0),
-                    Width = r.width,
-                    Height = r.height,
+                    Width = r.Width,
+                    Height = r.Height,
                     Fill = new SolidColorBrush(new Windows.UI.Color()
                     {
                         A = (byte)255,
-                        R = r.color.red,
-                        G = r.color.green,
-                        B = r.color.blue
+                        R = r.Color.Red,
+                        G = r.Color.Green,
+                        B = r.Color.Blue
                     }),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top
@@ -295,7 +287,7 @@ namespace Cs_Pong
             // Unless we are at the game over screen, we update the screen :
             if (state != Game_state.Over)
             {
-                score_value.Text = world.getPoints().ToString();
+                score_value.Text = world.GetPoints().ToString();
             }
             // Update different forms :
             UpdateCirclesDisplay();
@@ -315,17 +307,17 @@ namespace Cs_Pong
                     Left = world.Circs[i].X,
                     Top = world.Circs[i].Y
                 };
-                e.Width = world.Circs[i].radius * 2;
-                e.Height = world.Circs[i].radius * 2;
+                e.Width = world.Circs[i].Radius * 2;
+                e.Height = world.Circs[i].Radius * 2;
                 // Update the rectangle :
                 r = circs.Children[i * 2 + 1] as Windows.UI.Xaml.Shapes.Rectangle;
                 r.Margin = new Thickness()
                 {
-                    Left = world.Circs[i].X + world.Circs[i].radius,
-                    Top = world.Circs[i].Y + world.Circs[i].radius
+                    Left = world.Circs[i].X + world.Circs[i].Radius,
+                    Top = world.Circs[i].Y + world.Circs[i].Radius
                 };
-                r.Width = world.Circs[i].radius;
-                r.Height = world.Circs[i].radius;
+                r.Width = world.Circs[i].Radius;
+                r.Height = world.Circs[i].Radius;
                 // Rotate it :
                 RotateTransform rot = r.RenderTransform as RotateTransform;
                 rot.Angle = world.Circs[i].alpha;
@@ -336,7 +328,7 @@ namespace Cs_Pong
             // Update positions
             Windows.UI.Xaml.Shapes.Rectangle r;
             SolidColorBrush so;
-            for(int i = 0; i < rects.Children.Count; i++)
+            for (int i = 0; i < rects.Children.Count; i++)
             {
                 r = rects.Children[i] as Windows.UI.Xaml.Shapes.Rectangle;
                 so = r.Fill as SolidColorBrush;
@@ -381,10 +373,9 @@ namespace Cs_Pong
                     points = new PointCollection
                     {
                         new Point(Options.TRIG_RADIUS, 0),
-                        new Point(Options.TRIG_RADIUS * 0.5, Options.TRIG_RADIUS * ( 1 - Math.Sqrt(3) / 2.0)),
-                        new Point(Options.TRIG_RADIUS * 0.5, Options.TRIG_RADIUS * ( 1 - Math.Sqrt(3) / 2.0))
+                        new Point(Options.TRIG_RADIUS * ( 1 - Math.Sqrt(3) / 2.0), Options.TRIG_RADIUS * 1.5 ),
+                        new Point(Options.TRIG_RADIUS * ( 1 + Math.Sqrt(3) / 2.0), Options.TRIG_RADIUS * 1.5)
                     };
-                    score_value.Text = world.Trigs[i].color.red.ToString() + world.Trigs[i].color.green.ToString() + world.Trigs[i].color.blue.ToString();
                     p = new Windows.UI.Xaml.Shapes.Polygon()
                     {
                         Points = points,
@@ -392,9 +383,9 @@ namespace Cs_Pong
                         Fill = new SolidColorBrush(new Windows.UI.Color()
                         {
                             A = (byte)255,
-                            R = world.Trigs[i].color.red,
-                            G = world.Trigs[i].color.green,
-                            B = world.Trigs[i].color.blue
+                            R = world.Trigs[i].Color.Red,
+                            G = world.Trigs[i].Color.Green,
+                            B = world.Trigs[i].Color.Blue
                         }),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
@@ -406,26 +397,27 @@ namespace Cs_Pong
                     trigs.Children.Add(p);
                 }
             }
-            // Update positions and rotation and delete the triangle if isOff
             for (int i = 0; i < world.Trigs.Count; i++)
             {
-                if (world.Trigs[i].isOff)
+                if (world.Trigs[i].IsOff)
                 {
                     trigs.Children.RemoveAt(i);
-                    world.deleteTrigAt(i);
+                    world.DeleteTrigAt(i);
+                    i--;
                 }
-                else
+            }
+            // Update positions and rotation :
+            for (int i = 0; i < world.Trigs.Count; i++)
+            {
+                p = trigs.Children[i] as Windows.UI.Xaml.Shapes.Polygon;
+                p.Margin = new Thickness()
                 {
-                    p = trigs.Children[i] as Windows.UI.Xaml.Shapes.Polygon;
-                    p.Margin = new Thickness()
-                    {
-                        Left = world.Trigs[i].X,
-                        Top = world.Trigs[i].Y
-                    };
-                    // Rotate it :
-                    RotateTransform rot = p.RenderTransform as RotateTransform;
-                    rot.Angle = world.Trigs[i].alpha;
-                }
+                    Left = world.Trigs[i].X,
+                    Top = world.Trigs[i].Y
+                };
+                // Rotate it :
+                RotateTransform rot = p.RenderTransform as RotateTransform;
+                rot.Angle = world.Trigs[i].alpha;
             }
         }
 
@@ -434,7 +426,7 @@ namespace Cs_Pong
             System.DateTime prev = System.DateTime.Now;
             while (true)
             {
-                world.step(((float)DateTime.Now.Subtract(prev).Milliseconds) / 1000);
+                world.Step(((float)DateTime.Now.Subtract(prev).Milliseconds) / 1000);
                 UpdateScreen();
 
                 prev = System.DateTime.Now;
